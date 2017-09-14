@@ -1,7 +1,6 @@
 package com.theironyard.invoicify.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -11,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.theironyard.invoicify.models.Company;
-import com.theironyard.invoicify.models.FlatFeeBillingRecord;
 import com.theironyard.invoicify.models.RateBasedBillingRecord;
 import com.theironyard.invoicify.models.User;
 import com.theironyard.invoicify.repositories.BillingRecordRepository;
