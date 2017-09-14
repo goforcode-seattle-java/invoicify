@@ -11,26 +11,29 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.theironyard.invoicify.models.BillingRecord;
 import com.theironyard.invoicify.repositories.BillingRecordRepository;
+import com.theironyard.invoicify.repositories.CompanyRepository;
 
 public class BillingRecordControllerTests {
 	
 	private BillingRecordController controller;
-	private BillingRecordRepository repo;
+	private BillingRecordRepository recordRepository;
+	private CompanyRepository companyRepository;
 	
 	@Before
 	public void setup() {
-		repo = mock(BillingRecordRepository.class);
-		controller = new BillingRecordController(repo);
+		companyRepository = mock(CompanyRepository.class);
+		recordRepository = mock(BillingRecordRepository.class);
+		controller = new BillingRecordController(recordRepository, companyRepository);
 	}
 
 	@Test
 	public void test_list() {
 		List<BillingRecord> records = new ArrayList<BillingRecord>();
-		when(repo.findAll()).thenReturn(records);
+		when(recordRepository.findAll()).thenReturn(records);
 		
 		ModelAndView actual = controller.list();
 		
-		verify(repo).findAll();
+		verify(recordRepository).findAll();
 		assertThat(actual.getViewName()).isEqualTo("billing-records/list");
 		assertThat(actual.getModel().get("records")).isSameAs(records);
 	}
