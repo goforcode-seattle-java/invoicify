@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Companies</title>
+</head>
+<body>
+
+{{> common/_navigation }}
+
+<h1>Companies</h1>
+
+<form action="/admin/companies" method="post">
+  <input type="text" name="name" placeholder="company name" required>
+  <button>Add company</button>
+  <input type="hidden" name="{{ _csrf.parameterName }}" value="{{ _csrf.token }}">
+</form>
+
+{{#hasCompanies}}
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Number of invoices</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#companies}}
+      <tr>
+        <td>{{ name }}</td>
+        <td>{{ invoices.size }}</td>
+      </tr>
+    {{/companies}}
+  </tbody>
+</table>
+{{/hasCompanies}}
+
+</body>
+</html>

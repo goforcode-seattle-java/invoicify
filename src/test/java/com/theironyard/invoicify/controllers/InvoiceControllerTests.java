@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.Authentication;
+import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.theironyard.invoicify.models.BillingRecord;
@@ -67,12 +68,13 @@ public class InvoiceControllerTests {
 	public void test_createInvoice_converts_billing_record_ids_to_an_invoice() {
 		Company company = new Company();
 		Invoice invoice = new Invoice();
+		Model model = mock(Model.class);
 		long[] recordIds = { 1L, 2L };
 		List<BillingRecord> records = Arrays.asList(new BillingRecord[] { new FlatFeeBillingRecord(), new RateBasedBillingRecord() }); 
 		when(recordRepository.findByIdIn(recordIds)).thenReturn(records);
 		when(companyRepository.findOne(3L)).thenReturn(company);
 		
-		String actual = controller.createInvoice(invoice, 3L, recordIds, authentication);
+		String actual = controller.createInvoice(model, invoice, 3L, recordIds, authentication);
 		
 		assertThat(actual).isEqualTo("redirect:/invoices");
 		verify(authentication).getPrincipal();

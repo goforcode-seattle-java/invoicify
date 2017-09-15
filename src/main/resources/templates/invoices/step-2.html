@@ -6,10 +6,17 @@
 </head>
 <body>
 
+{{> common/_navigation }}
+
+{{#errorMessage}}
+  <div>{{ errorMessage }}</div>
+{{/errorMessage}}
+
 <form method="post" action="/invoices/create">
   <input type="text"
          name="invoiceNumber"
          placeholder="invoice number (NaN)"
+         {{#invoiceNumber}}value="{{ invoiceNumber }}"{{/invoiceNumber}}
          required>
 
   <table>

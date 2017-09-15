@@ -29,11 +29,11 @@ public class BillingRecordControllerTests {
 	@Test
 	public void test_list() {
 		List<BillingRecord> records = new ArrayList<BillingRecord>();
-		when(recordRepository.findAll()).thenReturn(records);
+		when(recordRepository.findByLineItemIsNull()).thenReturn(records);
 		
 		ModelAndView actual = controller.list();
 		
-		verify(recordRepository).findAll();
+		verify(recordRepository).findByLineItemIsNull();
 		assertThat(actual.getViewName()).isEqualTo("billing-records/list");
 		assertThat(actual.getModel().get("records")).isSameAs(records);
 	}

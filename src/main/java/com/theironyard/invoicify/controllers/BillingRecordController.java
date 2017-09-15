@@ -23,7 +23,7 @@ public class BillingRecordController {
 	@GetMapping("")
 	public ModelAndView list() {
 		ModelAndView mv = new ModelAndView("billing-records/list");
-		mv.addObject("records", recordRepository.findAll());
+		mv.addObject("records", recordRepository.findByLineItemIsNull());
 		mv.addObject("companies", companyRepository.findAll());
 		return mv;
 	}

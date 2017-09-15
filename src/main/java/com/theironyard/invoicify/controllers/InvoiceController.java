@@ -6,8 +6,10 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,9 +37,19 @@ public class InvoiceController {
 	private CompanyRepository companyRepository;
 	
 	@PostMapping("create")
-	public String createInvoice(Invoice invoice, long clientId, long[] recordIds, Authentication auth) {
+	public String createInvoice(Model model, Invoice invoice, long clientId, long[] recordIds, Authentication auth) {
+		List<BillingRecord> records = null;
+		try {
+			records = recordRepository.findByIdIn(recordIds);
+		} catch (InvalidDataAccessApiUsageException idaaue) {
+			model.addAttribute("clientId", clientId);
+			model.addAttribute("records", recordRepository.findByClientIdAndLineItemIsNull(clientId));
+			model.addAttribute("errorMessage", "Please select at least one billing record.");
+			model.addAttribute("invoiceNumber", invoice.getInvoiceNumber());
+			return "invoices/step-2";
+		}
+
 		User creator = (User) auth.getPrincipal();
-		List<BillingRecord> records = recordRepository.findByIdIn(recordIds);
 		long nowish = Calendar.getInstance().getTimeInMillis();
 		Date now = new Date(nowish);
 		
